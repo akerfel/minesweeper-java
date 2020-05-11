@@ -27,7 +27,7 @@ void setup() {
     
     // Debug/cheat settings
     startBoardRevealed = false;
-    onlyOneMineUpperLeftCorner = false;
+    onlyOneMineUpperLeftCorner = true;
     
     // Visual settings
     pixelCount = 20;  // pixels per square side
@@ -186,7 +186,12 @@ void drawGameOverScreen() {
     fill(200, 0, 0);
     for (int i = 0; i < boardWidth; i++) {
         for (int j = 0; j < boardHeight; j++) {
+            fill(220, 0, 0);
             square(boardStartX + i * pixelCount, boardStartY + j * pixelCount, pixelCount);
+            if (squareHasMine[i][j]) {
+                fill(0, 0, 0);
+                circle(boardStartX + i * pixelCount, boardStartY + j * pixelCount, pixelCount);
+            }
         }
     }
 }
