@@ -2,6 +2,7 @@
 
 // Debug/cheat settings
 boolean startBoardRevealed;
+boolean onlyOneMineUpperLeftCorner;    // Overrides numMines
 
 // Visual settings
 int pixelCount;  // pixels per square side
@@ -9,14 +10,16 @@ int boardStartX;
 int boardStartY;
 
 // Difficulty settings
-String difficulty;    // "Beginner", "Intermediate" or "Expert"
-int boardWidth;       // Depending on difficulty: 9, 16, 30
-int boardHeight;      // Depending on difficulty: 9, 16, 16
-int numMines;         // Depending on difficulty: 10, 40, 99
+String difficulty;    // "Supersmall", "Beginner", "Intermediate" or "Expert"
+int boardWidth;       // Depending on difficulty: 2, 9, 16, 30
+int boardHeight;      // Depending on difficulty: 2, 9, 16, 16
+int numMines;         // Depending on difficulty: 2, 10, 40, 99
 
 // Important  variables
 boolean squareHasMine[][];
 boolean squareIsRevealed[][];
+boolean gameOver;
+boolean gameWon;
 
 void setup() {
     // Game window
@@ -24,6 +27,7 @@ void setup() {
     
     // Debug/cheat settings
     startBoardRevealed = false;
+    onlyOneMineUpperLeftCorner = true;
     
     // Visual settings
     pixelCount = 20;  // pixels per square side
@@ -32,17 +36,32 @@ void setup() {
     ellipseMode(CORNER);
     
     // Difficulty settings
-    difficulty = "Beginner"; // "Beginner", "Intermediate" or "Expert"
+    difficulty = "Supersmall"; // "Supersmall", "Beginner", "Intermediate" or "Expert"
     setDifficulty();
     
     // Important  variables
     squareHasMine = new boolean[boardWidth][boardHeight];
     squareIsRevealed = new boolean[boardWidth][boardHeight];
+    gameOver = false;
+    gameWon = false;
     
     // Setup functions
-    setAllUnrevealed();
-    placeMines();
+    setupBoard();
     drawBoard();
+}
+
+void setupBoard() {
+    setAllUnrevealed();
+    if (onlyOneMineUpperLeftCorner) {
+        placeOneMineUpperLeftCorner();
+    }
+    else {
+        placeMines();
+    }
+}
+
+void placeOneMineUpperLeftCorner() {
+    squareHasMine[0][0] = true;
 }
 
 void setAllUnrevealed() {
@@ -61,7 +80,6 @@ void setAllUnrevealed() {
 void placeMines() {
     int minesLeftToPlace = numMines;
     float mineChance = calculateMineChance();
-    println("mineChance: " + mineChance);
     setAllSquaresToNoMines();
     while (minesLeftToPlace > 0) { 
         for (int i = 0; i < boardWidth; i++) {
@@ -76,7 +94,6 @@ void placeMines() {
             }
         }
     }
-    println("41");
 }
 
 void setAllSquaresToNoMines() {
@@ -94,7 +111,12 @@ float calculateMineChance() {
 }
 
 void setDifficulty() {
-    if (difficulty.equals("Beginner")) {
+    if (difficulty.equals("Supersmall")) {
+        boardWidth = 2;
+        boardHeight = 2;
+        numMines = 2;
+    }
+    else if (difficulty.equals("Beginner")) {
         boardWidth = 9;
         boardHeight = 9;
         numMines = 10;
@@ -123,7 +145,13 @@ void draw() {
 // drawBoard() is only called when mouse is clicked,
 // since board does not need to be updated at any other point.
 void drawBoard () {
-    if (!hasWon()) {
+    if (gameWon) {
+        drawWinScreen();
+    }
+    else if (gameOver) {
+        drawGameOverScreen();
+    }
+    else {
         for (int i = 0; i < boardWidth; i++) {
             for (int j = 0; j < boardHeight; j++) {
                 if (squareIsRevealed[i][j]) {
@@ -141,8 +169,25 @@ void drawBoard () {
             }
         }
     }
-    else {
-        drawWinScreen();
+}
+
+// All squares are drawn green
+void drawWinScreen() {
+    fill(0, 200, 0);
+    for (int i = 0; i < boardWidth; i++) {
+        for (int j = 0; j < boardHeight; j++) {
+            square(boardStartX + i * pixelCount, boardStartY + j * pixelCount, pixelCount);
+        }
+    }
+}
+
+// All squares are drawn red
+void drawGameOverScreen() {
+    fill(200, 0, 0);
+    for (int i = 0; i < boardWidth; i++) {
+        for (int j = 0; j < boardHeight; j++) {
+            square(boardStartX + i * pixelCount, boardStartY + j * pixelCount, pixelCount);
+        }
     }
 }
 
@@ -169,31 +214,16 @@ void randomizeBoard() {
 }
 
 void mouseClicked() {
-    if (!hasWon()) {
-        for (int i = 0; i < boardWidth; i++) {
-            for (int j = 0; j < boardHeight; j++) {
-                if (mouseX > boardStartX + i * pixelCount && mouseX <= boardStartX + i * pixelCount + pixelCount && mouseY > boardStartY + j * pixelCount && mouseY <= boardStartY + j * pixelCount + pixelCount) {
-                    clickSquare(i, j);
-                }
+    for (int i = 0; i < boardWidth; i++) {
+        for (int j = 0; j < boardHeight; j++) {
+            if (mouseX > boardStartX + i * pixelCount && mouseX <= boardStartX + i * pixelCount + pixelCount && mouseY > boardStartY + j * pixelCount && mouseY <= boardStartY + j * pixelCount + pixelCount) {
+                clickSquare(i, j);
             }
-        } 
-    }
+        }
+    } 
     drawBoard();
 }
 
 void clickSquare(int x, int y) {
     squareIsRevealed[x][y] = true;
-}
-
-void drawWinScreen() {
-    fill(0, 200, 0);
-    for (int i = 0; i < boardWidth; i++) {
-        for (int j = 0; j < boardHeight; j++) {
-            square(boardStartX + i * pixelCount, boardStartY + j * pixelCount, pixelCount);
-        }
-    }
-}
-
-boolean hasWon() {
-    return false;
 }
