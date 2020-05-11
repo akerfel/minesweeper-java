@@ -1,7 +1,6 @@
 // minesweeperonline
 
 // Debug/cheat settings
-boolean startBoardRevealed;             // click one time to win.
 boolean onlyTwoMinesUpperLeftCorner;    // Overrides numMines
 
 // Visual settings
@@ -18,6 +17,7 @@ int numMines;         // Depending on difficulty: 2, 10, 40, 99
 // Important  variables
 boolean squareHasMine[][];
 boolean squareIsRevealed[][];
+boolean squareIsFlagged[][];
 boolean gameOver;
 boolean gameWon;
 
@@ -26,7 +26,6 @@ void setup() {
     size(800, 600);
     
     // Debug/cheat settings
-    startBoardRevealed = false;
     onlyTwoMinesUpperLeftCorner = false;
     
     // Visual settings
@@ -46,6 +45,7 @@ void setup() {
     // Important  variables
     squareHasMine = new boolean[boardWidth][boardHeight];
     squareIsRevealed = new boolean[boardWidth][boardHeight];
+    squareIsFlagged = new boolean[boardWidth][boardHeight];
     gameOver = false;
     gameWon = false;
     
@@ -56,6 +56,7 @@ void setup() {
 
 void setupBoard() {
     setAllUnrevealed();
+    setAllNotFlagged();
     if (onlyTwoMinesUpperLeftCorner) {
         placeTwoMinesUpperLeftCorner();
     }
@@ -72,15 +73,19 @@ void placeTwoMinesUpperLeftCorner() {
 void setAllUnrevealed() {
     for (int i = 0; i < boardWidth; i++) {
         for (int j = 0; j < boardHeight; j++) {
-            if (startBoardRevealed) {
-                squareIsRevealed[i][j] = true;
-            }
-            else {
-                squareIsRevealed[i][j] = false;
-            }
+            squareIsRevealed[i][j] = false;
         }
     }
 }
+
+void setAllNotFlagged() {
+    for (int i = 0; i < boardWidth; i++) {
+        for (int j = 0; j < boardHeight; j++) {
+            squareIsFlagged[i][j] = false;
+        }
+    }
+}
+
 
 void placeMines() {
     int minesLeftToPlace = numMines;
@@ -169,6 +174,11 @@ void drawBoard () {
                 if (minesNextTo != 0) {
                     fill(0, 0, 0);
                     text(minesNextTo, boardStartX + i * pixelCount + pixelCount / 2, boardStartY + j * pixelCount + pixelCount / 2);
+                }
+                if (squareIsFlagged[i][j]) {
+                    fill(0, 0, 200);
+                    circle(boardStartX + i * pixelCount, boardStartY + j * pixelCount, pixelCount / 3);
+
                 }
             }
             else {
@@ -285,20 +295,34 @@ void randomizeBoard() {
     }
 }
 
+void keyPressed() {
+    if (key == ' ') {
+        println("space");
+        //flagSquare(i, j);
+    }
+}
+
 void mouseClicked() {
-    if (!gameWon && !gameOver) {
-        for (int i = 0; i < boardWidth; i++) {
-            for (int j = 0; j < boardHeight; j++) {
-                if (mouseX > boardStartX + i * pixelCount && mouseX <= boardStartX + i * pixelCount + pixelCount && mouseY > boardStartY + j * pixelCount && mouseY <= boardStartY + j * pixelCount + pixelCount) {
-                    clickSquare(i, j);
-                }
-            }
-        } 
+    int xm = mouseX;
+    int ym = mouseY;
+    if (!gameWon && !gameOver && mouseButton == LEFT) {
+        int x = (xm - boardStartX) / pixelCount;
+        int y = (ym - boardStartY) / pixelCount;
+        if (x >= 0 && y >= 0 && x < boardHeight && y < boardWidth) {
+            clickSquare(x, y);
+            println("clicked square " + x + " " + y);
+        }
         if (hasWon()) {
             setGameWon();
         }
     }
     drawBoard();
+}
+
+void flagSquare(int x, int y) {
+    if (!squareIsRevealed[x][y]) {
+        squareIsFlagged[x][y] = true;
+    }
 }
 
 // if all squares without mines have been revealed, return true
