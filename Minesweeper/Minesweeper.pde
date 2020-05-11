@@ -1,7 +1,7 @@
 // minesweeperonline
 
 // Debug/cheat settings
-boolean startBoardRevealed;
+boolean startBoardRevealed;             // click one time to win.
 boolean onlyTwoMinesUpperLeftCorner;    // Overrides numMines
 
 // Visual settings
@@ -27,7 +27,7 @@ void setup() {
     
     // Debug/cheat settings
     startBoardRevealed = false;
-    onlyTwoMinesUpperLeftCorner = true;
+    onlyTwoMinesUpperLeftCorner = false;
     
     // Visual settings
     pixelCount = 20;  // pixels per square side
@@ -235,7 +235,8 @@ int countMinesNextToThisSquare(int x, int y) {
 
 // All squares are drawn green
 void drawWinScreen() {
-    text("GAME WON", 20, 20);
+    fill(0, 200, 0);
+    text("GAME WON", 60, 20);
     for (int i = 0; i < boardWidth; i++) {
         for (int j = 0; j < boardHeight; j++) {
             fill(0, 200, 0);
@@ -250,7 +251,8 @@ void drawWinScreen() {
 
 // All squares are drawn red
 void drawGameOverScreen() {
-    text("GAME OVER", 20, 20);
+    fill(220, 0, 0);
+    text("GAME OVER", 60, 20);
     for (int i = 0; i < boardWidth; i++) {
         for (int j = 0; j < boardHeight; j++) {
             fill(220, 0, 0);
