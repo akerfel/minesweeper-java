@@ -35,8 +35,12 @@ void setup() {
     boardStartY = 40;
     ellipseMode(CORNER);
     
+    // Font
+    textSize(20);
+    textAlign(CENTER, CENTER);
+    
     // Difficulty settings
-    difficulty = "Supersmall"; // "Supersmall", "Beginner", "Intermediate" or "Expert"
+    difficulty = "Beginner"; // "Supersmall", "Beginner", "Intermediate" or "Expert"
     setDifficulty();
     
     // Important  variables
@@ -162,6 +166,11 @@ void drawBoard () {
                         fill(0, 0, 0);
                         circle(boardStartX + i * pixelCount, boardStartY + j * pixelCount, pixelCount);
                     }
+                    int minesNextTo = countMinesNextToThisSquare(i, j);
+                    if (minesNextTo != 0) {
+                        fill(0, 0, 0);
+                        text(minesNextTo, boardStartX + i * pixelCount + pixelCount / 2, boardStartY + j * pixelCount + pixelCount / 2);
+                    }
                 }
                 else {
                     fill(120, 120, 120);
@@ -170,6 +179,58 @@ void drawBoard () {
             }
         }
     }
+}
+
+int countMinesNextToThisSquare(int x, int y) {
+    int minesCounted = 0;
+    // squares above, aka checking y - 1
+    if (y != 0) {
+        if (x != 0) {
+            if (squareHasMine[x - 1][y - 1]) {
+                minesCounted++;
+            }
+        }
+        if (squareHasMine[x][y - 1]) {
+            minesCounted++;
+        }
+        if (x != boardWidth - 1) {
+            if (squareHasMine[x + 1][y - 1]) {
+                minesCounted++;
+            }
+        }
+    }
+    
+    // square to the left
+    if (x != 0) {
+        if (squareHasMine[x - 1][y]) {
+            minesCounted++;
+        }
+    }
+    
+    // square to the right
+    if (x != boardWidth - 1) {
+        if (squareHasMine[x + 1][y]) {
+            minesCounted++;
+        }
+    }
+    
+    // squares below
+    if (y != boardHeight - 1) {
+        if (x != 0) {
+            if (squareHasMine[x - 1][y + 1]) {
+                minesCounted++;
+            }
+        }
+        if (squareHasMine[x][y + 1]) {
+            minesCounted++;
+        }
+        if (x != boardWidth - 1) {
+            if (squareHasMine[x + 1][y + 1]) {
+                minesCounted++;
+            }
+        }
+    }
+    return minesCounted;
 }
 
 // All squares are drawn green
