@@ -109,10 +109,10 @@ void setDifficulty() {
         boardHeight = 16;
         numMines = 99;
     }
-    else {     // else set Beginner
-        boardWidth = 9;
-        boardHeight = 9;
-        numMines = 10;
+    else {     // else set board really small
+        boardWidth = 2;
+        boardHeight = 2;
+        numMines = 0;
     }
 }
 
