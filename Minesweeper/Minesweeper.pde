@@ -166,7 +166,7 @@ void drawBoard () {
                         fill(0, 0, 0);
                         circle(boardStartX + i * pixelCount, boardStartY + j * pixelCount, pixelCount);
                     }
-                    int minesNextTo = countMinesNextToThisSquare(i, j);
+                    int minesNextTo = countNearbyMines(i, j);
                     if (minesNextTo != 0) {
                         fill(0, 0, 0);
                         text(minesNextTo, boardStartX + i * pixelCount + pixelCount / 2, boardStartY + j * pixelCount + pixelCount / 2);
@@ -181,7 +181,7 @@ void drawBoard () {
     }
 }
 
-int countMinesNextToThisSquare(int x, int y) {
+int countNearbyMines(int x, int y) {
     int minesCounted = 0;
     // squares above, aka checking y - 1
     if (y != 0) {
@@ -320,5 +320,101 @@ void clickSquare(int x, int y) {
     squareIsRevealed[x][y] = true;
     if (squareHasMine[x][y]) {
         gameOver = true;
+    }
+    // recursivly check if mines next clicked square has zero mines next to it
+    recursiveClick(x, y);
+    /*
+    // squares above, aka checking same y - 1
+    recursiveClick(x - 1, y - 1);
+    recursiveClick(x, y - 1);
+    recursiveClick(x + 1, y - 1);
+    
+    // squares left and right, aka checking same y
+    recursiveClick(x - 1, y);
+    recursiveClick(x + 1, y);
+    
+    // squares below, aka checking same y + 1
+    recursiveClick(x - 1, y + 1);
+    recursiveClick(x, y + 1);
+    recursiveClick(x + 1, y + 1);
+    */
+}
+
+void recursiveClick(int x, int y) {
+    squareIsRevealed[x][y] = true;
+    if (y != 0) {
+        if (x != 0) {
+            if (!squareIsRevealed[x - 1][y - 1] && !squareHasMine[x - 1][y - 1] && countNearbyMines(x - 1, y - 1) == 0) {
+                recursiveClick(x - 1, y - 1);
+            }
+            if (!squareHasMine[x - 1][y - 1]) {
+                squareIsRevealed[x - 1][y - 1] = true;
+            }
+        }
+        
+        if (!squareIsRevealed[x][y - 1] && !squareHasMine[x][y - 1] && countNearbyMines(x, y - 1) == 0) {
+            recursiveClick(x, y - 1);
+        }
+        if (!squareHasMine[x][y - 1]) {
+                squareIsRevealed[x][y - 1] = true;
+        }
+            
+        if (x != boardWidth - 1) {
+            if (!squareIsRevealed[x + 1][y - 1] && !squareHasMine[x + 1][y - 1] && countNearbyMines(x + 1, y - 1) == 0) {
+                recursiveClick(x + 1, y);
+            }
+            if (!squareHasMine[x + 1][y - 1]) {
+                squareIsRevealed[x + 1][y - 1] = true;
+            }
+        }
+    }
+    
+    // square to the left
+    if (x != 0) {
+        if (!squareIsRevealed[x - 1][y] && !squareHasMine[x - 1][y] && countNearbyMines(x - 1, y) == 0) {
+            recursiveClick(x - 1, y);
+        }
+        if (!squareHasMine[x - 1][y]) {
+            squareIsRevealed[x - 1][y] = true;
+        }
+    }
+    
+    // square to the right
+    if (x != boardWidth - 1) {
+        if (!squareIsRevealed[x + 1][y] && !squareHasMine[x + 1][y] && countNearbyMines(x + 1, y) == 0) {
+            recursiveClick(x + 1, y);
+        }
+        if (!squareHasMine[x + 1][y]) {
+            squareIsRevealed[x + 1][y] = true;
+        }
+    }
+    
+    // squares below
+    if (y != boardHeight - 1) {
+        if (x != 0) {
+            if (!squareIsRevealed[x - 1][y + 1] && !squareHasMine[x - 1][y + 1] && countNearbyMines(x - 1, y + 1) == 0) {
+                recursiveClick(x - 1, y + 1);
+            }
+            if (!squareHasMine[x - 1][y + 1]) {
+                squareIsRevealed[x][y] = true;
+            }
+        }
+        
+        if (!squareIsRevealed[x][y + 1] && !squareHasMine[x][y + 1] && countNearbyMines(x, y + 1) == 0) {
+            recursiveClick(x, y + 1);
+        }
+        if (!squareHasMine[x][y + 1]) {
+            squareIsRevealed[x][y + 1] = true;
+        }
+            
+            
+        if (x != boardWidth - 1) {
+            if (!squareIsRevealed[x + 1][y + 1] && !squareHasMine[x + 1][y + 1] && countNearbyMines(x + 1, y + 1) == 0) {
+                recursiveClick(x + 1, y + 1);
+            }
+            if (!squareHasMine[x + 1][y + 1]) {
+                squareIsRevealed[x + 1][y + 1] = true;
+            }
+        }
     }
 }
