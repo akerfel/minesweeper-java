@@ -2,7 +2,7 @@
 
 // Debug/cheat settings
 boolean startBoardRevealed;
-boolean onlyOneMineUpperLeftCorner;    // Overrides numMines
+boolean onlyTwoMinesUpperLeftCorner;    // Overrides numMines
 
 // Visual settings
 int pixelCount;  // pixels per square side
@@ -27,7 +27,7 @@ void setup() {
     
     // Debug/cheat settings
     startBoardRevealed = false;
-    onlyOneMineUpperLeftCorner = true;
+    onlyTwoMinesUpperLeftCorner = true;
     
     // Visual settings
     pixelCount = 20;  // pixels per square side
@@ -52,16 +52,17 @@ void setup() {
 
 void setupBoard() {
     setAllUnrevealed();
-    if (onlyOneMineUpperLeftCorner) {
-        placeOneMineUpperLeftCorner();
+    if (onlyTwoMinesUpperLeftCorner) {
+        placeTwoMinesUpperLeftCorner();
     }
     else {
         placeMines();
     }
 }
 
-void placeOneMineUpperLeftCorner() {
+void placeTwoMinesUpperLeftCorner() {
     squareHasMine[0][0] = true;
+    squareHasMine[1][0] = true;
 }
 
 void setAllUnrevealed() {
