@@ -27,7 +27,7 @@ void setup() {
     
     // Debug/cheat settings
     startBoardRevealed = false;
-    onlyOneMineUpperLeftCorner = true;
+    onlyOneMineUpperLeftCorner = false;
     
     // Visual settings
     pixelCount = 20;  // pixels per square side
@@ -226,4 +226,7 @@ void mouseClicked() {
 
 void clickSquare(int x, int y) {
     squareIsRevealed[x][y] = true;
+    if (squareHasMine[x][y]) {
+        gameOver = true;
+    }
 }
