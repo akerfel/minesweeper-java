@@ -147,35 +147,33 @@ void draw() {
     // Need to have this method in order for mouseClicked() to work correctly.
 }
 
-// drawBoard() is only called when mouse is clicked,
+// this function is only called when mouse is clicked,
 // since board does not need to be updated at any other point.
 void drawBoard () {
-    if (gameWon) {
-        drawWinScreen();
-    }
-    else if (gameOver) {
-        drawGameOverScreen();
-    }
-    else {
-        for (int i = 0; i < boardWidth; i++) {
-            for (int j = 0; j < boardHeight; j++) {
-                if (squareIsRevealed[i][j]) {
-                    fill(220, 220, 220);
-                    square(boardStartX + i * pixelCount, boardStartY + j * pixelCount, pixelCount);
-                    if (squareHasMine[i][j]) {
-                        fill(0, 0, 0);
-                        circle(boardStartX + i * pixelCount, boardStartY + j * pixelCount, pixelCount);
-                    }
-                    int minesNextTo = countNearbyMines(i, j);
-                    if (minesNextTo != 0) {
-                        fill(0, 0, 0);
-                        text(minesNextTo, boardStartX + i * pixelCount + pixelCount / 2, boardStartY + j * pixelCount + pixelCount / 2);
-                    }
+    for (int i = 0; i < boardWidth; i++) {
+        for (int j = 0; j < boardHeight; j++) {
+            if (squareIsRevealed[i][j]) {
+                fill(220, 220, 220);
+                if (gameWon) {
+                    fill(0, 220, 0);
                 }
-                else {
-                    fill(120, 120, 120);
-                    square(boardStartX + i * pixelCount, boardStartY + j * pixelCount, pixelCount);
+                else if (gameOver) {
+                    fill(220, 0, 0);
                 }
+                square(boardStartX + i * pixelCount, boardStartY + j * pixelCount, pixelCount);
+                if (squareHasMine[i][j]) {
+                    fill(0, 0, 0);
+                    circle(boardStartX + i * pixelCount, boardStartY + j * pixelCount, pixelCount);
+                }
+                int minesNextTo = countNearbyMines(i, j);
+                if (minesNextTo != 0) {
+                    fill(0, 0, 0);
+                    text(minesNextTo, boardStartX + i * pixelCount + pixelCount / 2, boardStartY + j * pixelCount + pixelCount / 2);
+                }
+            }
+            else {
+                fill(120, 120, 120);
+                square(boardStartX + i * pixelCount, boardStartY + j * pixelCount, pixelCount);
             }
         }
     }
@@ -288,15 +286,17 @@ void randomizeBoard() {
 }
 
 void mouseClicked() {
-    for (int i = 0; i < boardWidth; i++) {
-        for (int j = 0; j < boardHeight; j++) {
-            if (mouseX > boardStartX + i * pixelCount && mouseX <= boardStartX + i * pixelCount + pixelCount && mouseY > boardStartY + j * pixelCount && mouseY <= boardStartY + j * pixelCount + pixelCount) {
-                clickSquare(i, j);
+    if (!gameWon && !gameOver) {
+        for (int i = 0; i < boardWidth; i++) {
+            for (int j = 0; j < boardHeight; j++) {
+                if (mouseX > boardStartX + i * pixelCount && mouseX <= boardStartX + i * pixelCount + pixelCount && mouseY > boardStartY + j * pixelCount && mouseY <= boardStartY + j * pixelCount + pixelCount) {
+                    clickSquare(i, j);
+                }
             }
+        } 
+        if (hasWon()) {
+            setGameWon();
         }
-    } 
-    if (hasWon()) {
-        gameWon = true;
     }
     drawBoard();
 }
@@ -316,13 +316,35 @@ boolean hasWon() {
     return true;    // if all squares without mines have been revealed, game has been won.
 }
 
+void setGameOver() {
+    gameOver = true;
+    setAllMinesRevealed();
+}
+
+void setGameWon() {
+    gameWon = true;
+    setAllMinesRevealed();
+}
+
+void setAllMinesRevealed() {
+    for (int i = 0; i < boardWidth; i++) {
+        for (int j = 0; j < boardHeight; j++) {
+            if (squareHasMine[i][j]) {
+                squareIsRevealed[i][j] = true;
+            }
+        }
+    }
+}
+
 void clickSquare(int x, int y) {
     squareIsRevealed[x][y] = true;
     if (squareHasMine[x][y]) {
-        gameOver = true;
+        setGameOver();
     }
     // recursivly check if mines next clicked square has zero mines next to it
-    recursiveClick(x, y);
+    if (!squareHasMine[x][y]) {
+        recursiveClick(x, y);
+    }
     /*
     // squares above, aka checking same y - 1
     recursiveClick(x - 1, y - 1);
