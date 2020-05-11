@@ -174,17 +174,22 @@ void drawBoard () {
 
 // All squares are drawn green
 void drawWinScreen() {
-    fill(0, 200, 0);
+    text("GAME WON", 20, 20);
     for (int i = 0; i < boardWidth; i++) {
         for (int j = 0; j < boardHeight; j++) {
+            fill(0, 200, 0);
             square(boardStartX + i * pixelCount, boardStartY + j * pixelCount, pixelCount);
+            if (squareHasMine[i][j]) {
+                fill(0, 0, 0);
+                circle(boardStartX + i * pixelCount, boardStartY + j * pixelCount, pixelCount);
+            }
         }
     }
 }
 
 // All squares are drawn red
 void drawGameOverScreen() {
-    fill(200, 0, 0);
+    text("GAME OVER", 20, 20);
     for (int i = 0; i < boardWidth; i++) {
         for (int j = 0; j < boardHeight; j++) {
             fill(220, 0, 0);
@@ -227,7 +232,25 @@ void mouseClicked() {
             }
         }
     } 
+    if (hasWon()) {
+        gameWon = true;
+    }
     drawBoard();
+}
+
+// if all squares without mines have been revealed, return true
+boolean hasWon() {
+    for (int i = 0; i < boardWidth; i++) {
+        for (int j = 0; j < boardHeight; j++) {
+            if (!squareHasMine[i][j]) {  // if square has mine, skip it  
+                // If square without mine is NOT revealed, game has not been won yet.
+                if (!squareIsRevealed[i][j]) {
+                    return false;
+                }
+            }
+        }
+    } 
+    return true;    // if all squares without mines have been revealed, game has been won.
 }
 
 void clickSquare(int x, int y) {
