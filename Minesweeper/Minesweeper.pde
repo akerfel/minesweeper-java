@@ -1,4 +1,25 @@
-// minesweeperonline
+// Current list of functions, extracted with https://onlinetexttools.com/filter-text
+/*
+void setup() {
+void setupBoard() {
+void placeTwoMinesUpperLeftCorner() {
+void setAllUnrevealed() {
+void setAllNotFlagged() {
+void placeMines() {
+void setAllSquaresToNoMines() {
+float calculateMineChance() {
+void setDifficulty() {
+void draw() {
+void drawBoard () {
+void drawBackground() {
+void randomizeBoard() {
+void keyPressed() {
+void mouseClicked() {
+boolean hasWon() {
+void setGameOver() {
+void setGameWon() {
+void setAllMinesRevealed() {
+*/
 
 // Debug/cheat settings
 boolean onlyTwoMinesUpperLeftCorner;    // Overrides numMines
@@ -20,6 +41,8 @@ boolean squareIsRevealed[][];
 boolean squareIsFlagged[][];
 boolean gameOver;
 boolean gameWon;
+
+
 
 void setup() {
     // Game window
@@ -255,47 +278,6 @@ int countNearbyMines(int x, int y) {
         }
     }
     return minesCounted;
-}
-
-// All squares are drawn green
-void drawWinScreen() {
-    fill(0, 200, 0);
-    text("GAME WON", 60, 20);
-    for (int i = 0; i < boardWidth; i++) {
-        for (int j = 0; j < boardHeight; j++) {
-            fill(0, 200, 0);
-            square(boardStartX + i * pixelCount, boardStartY + j * pixelCount, pixelCount);
-            if (squareHasMine[i][j]) {
-                fill(0, 0, 0);
-                circle(boardStartX + i * pixelCount, boardStartY + j * pixelCount, pixelCount);
-            }
-        }
-    }
-}
-
-// All squares are drawn red
-void drawGameOverScreen() {
-    fill(220, 0, 0);
-    text("GAME OVER", 60, 20);
-    for (int i = 0; i < boardWidth; i++) {
-        for (int j = 0; j < boardHeight; j++) {
-            fill(220, 0, 0);
-            square(boardStartX + i * pixelCount, boardStartY + j * pixelCount, pixelCount);
-            if (squareHasMine[i][j]) {
-                fill(0, 0, 0);
-                circle(boardStartX + i * pixelCount, boardStartY + j * pixelCount, pixelCount);
-            }
-        }
-    }
-}
-
-void setupBoardEasyWin() {
-    for (int i = 0; i < boardWidth; i++) {
-        for (int j = 0; j < boardHeight; j++) {
-            squareHasMine[i][j] = false;
-        }
-    }
-    squareHasMine[0][0] = true;
 }
 
 void randomizeBoard() {
