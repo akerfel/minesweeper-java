@@ -12,7 +12,6 @@ void setDifficulty() {
 void draw() {
 void drawBoard () {
 void drawBackground() {
-void randomizeBoard() {
 void keyPressed() {
 void mouseClicked() {
 boolean hasWon() {
