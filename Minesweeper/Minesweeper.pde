@@ -26,17 +26,15 @@ void setup() {
     size(800, 600);
     
     // Debug/cheat settings
-    onlyTwoMinesUpperLeftCorner = false;
+    onlyTwoMinesUpperLeftCorner = true;
     
     // Visual settings
-    pixelCount = 25;  // pixels per square side
+    pixelCount = 25;  // pixels per side of square
     boardStartX = 30;
     boardStartY = 150;
-    // draw background
-    drawBackground();
     
     // Difficulty settings
-    difficulty = "Intermediate"; // "Supersmall", "Beginner", "Intermediate" or "Expert"
+    difficulty = "Supersmall"; // "Supersmall", "Beginner", "Intermediate" or "Expert"
     setDifficulty();
     
     // Important  variables
@@ -48,6 +46,7 @@ void setup() {
     
     // Setup functions
     setupBoard();
+    drawBackground();
     drawBoard();
 }
 
@@ -182,7 +181,7 @@ void drawBoard () {
                     ellipseMode(CORNER);
                     circle(boardStartX + i * pixelCount, boardStartY + j * pixelCount, pixelCount);
                     if (squareIsFlagged[i][j]) {
-                        fill(0, 200, 0);
+                        fill(255, 165, 0);
                         ellipseMode(CENTER);
                         circle(boardStartX + i * pixelCount + pixelCount / 2, boardStartY + j * pixelCount + pixelCount / 2, pixelCount / 3);
                     }
