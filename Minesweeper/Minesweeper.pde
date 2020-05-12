@@ -32,11 +32,6 @@ void setup() {
     pixelCount = 20;  // pixels per square side
     boardStartX = 40;
     boardStartY = 40;
-    ellipseMode(CORNER);
-    
-    // Font
-    textSize(20);
-    textAlign(CENTER, CENTER);
     
     // Difficulty settings
     difficulty = "Beginner"; // "Supersmall", "Beginner", "Intermediate" or "Expert"
@@ -155,6 +150,10 @@ void draw() {
 // this function is only called when mouse is clicked,
 // since board does not need to be updated at any other point.
 void drawBoard () {
+    textAlign(CORNER);
+    fill(0, 0, 0);
+    textSize(16);
+    text("LMB to reveal square, space to flag.", 30, 30);
     for (int i = 0; i < boardWidth; i++) {
         for (int j = 0; j < boardHeight; j++) {
             if (squareIsRevealed[i][j]) {
@@ -168,22 +167,25 @@ void drawBoard () {
                 square(boardStartX + i * pixelCount, boardStartY + j * pixelCount, pixelCount);
                 if (squareHasMine[i][j]) {
                     fill(0, 0, 0);
+                    ellipseMode(CORNER);
                     circle(boardStartX + i * pixelCount, boardStartY + j * pixelCount, pixelCount);
                 }
                 int minesNextTo = countNearbyMines(i, j);
                 if (minesNextTo != 0) {
                     fill(0, 0, 0);
+                    textSize(20);
+                    textAlign(CENTER, CENTER);
                     text(minesNextTo, boardStartX + i * pixelCount + pixelCount / 2, boardStartY + j * pixelCount + pixelCount / 2);
-                }
-                if (squareIsFlagged[i][j]) {
-                    fill(0, 0, 200);
-                    circle(boardStartX + i * pixelCount, boardStartY + j * pixelCount, pixelCount / 3);
-
                 }
             }
             else {
                 fill(120, 120, 120);
                 square(boardStartX + i * pixelCount, boardStartY + j * pixelCount, pixelCount);
+                if (squareIsFlagged[i][j]) {
+                    fill(200, 0, 0);
+                    ellipseMode(CENTER);
+                    circle(boardStartX + i * pixelCount + pixelCount / 2, boardStartY + j * pixelCount + pixelCount / 2, pixelCount / 3);
+                }
             }
         }
     }
@@ -297,8 +299,21 @@ void randomizeBoard() {
 
 void keyPressed() {
     if (key == ' ') {
-        println("space");
-        //flagSquare(i, j);
+        int xm = mouseX;
+        int ym = mouseY;
+        int x = (xm - boardStartX) / pixelCount;
+        int y = (ym - boardStartY) / pixelCount;
+        flagOrUnflagSquare(x, y);
+    }
+    drawBoard();
+}
+
+void flagOrUnflagSquare(int x, int y) {
+    if (squareIsFlagged[x][y]) {
+        squareIsFlagged[x][y] = false;
+    }
+    else {
+        squareIsFlagged[x][y] = true;
     }
 }
 
@@ -319,11 +334,7 @@ void mouseClicked() {
     drawBoard();
 }
 
-void flagSquare(int x, int y) {
-    if (!squareIsRevealed[x][y]) {
-        squareIsFlagged[x][y] = true;
-    }
-}
+
 
 // if all squares without mines have been revealed, return true
 boolean hasWon() {
