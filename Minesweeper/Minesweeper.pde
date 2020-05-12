@@ -280,19 +280,6 @@ int countNearbyMines(int x, int y) {
     return minesCounted;
 }
 
-void randomizeBoard() {
-    for (int i = 0; i < boardWidth; i++) {
-        for (int j = 0; j < boardHeight; j++) {
-            if (random(0, 1) < 0.5) {
-                squareHasMine[i][j] = true;
-            }
-            else {
-                squareHasMine[i][j] = false;
-            }
-        }
-    }
-}
-
 void keyPressed() {
     if (!gameWon && !gameOver) {
         if (key == ' ') {
