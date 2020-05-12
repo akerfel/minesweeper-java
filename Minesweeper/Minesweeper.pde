@@ -26,7 +26,7 @@ void setup() {
     size(800, 600);
     
     // Debug/cheat settings
-    onlyTwoMinesUpperLeftCorner = true;
+    onlyTwoMinesUpperLeftCorner = false;
     
     // Visual settings
     pixelCount = 25;  // pixels per side of square
@@ -34,7 +34,7 @@ void setup() {
     boardStartY = 150;
     
     // Difficulty settings
-    difficulty = "Supersmall"; // "Supersmall", "Beginner", "Intermediate" or "Expert"
+    difficulty = "Intermediate"; // "Supersmall", "Beginner", "Intermediate" or "Expert"
     setDifficulty();
     
     // Important  variables
