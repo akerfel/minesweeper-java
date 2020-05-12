@@ -29,12 +29,14 @@ void setup() {
     onlyTwoMinesUpperLeftCorner = false;
     
     // Visual settings
-    pixelCount = 20;  // pixels per square side
-    boardStartX = 40;
-    boardStartY = 40;
+    pixelCount = 25;  // pixels per square side
+    boardStartX = 30;
+    boardStartY = 150;
+    // draw background
+    drawBackground();
     
     // Difficulty settings
-    difficulty = "Beginner"; // "Supersmall", "Beginner", "Intermediate" or "Expert"
+    difficulty = "Intermediate"; // "Supersmall", "Beginner", "Intermediate" or "Expert"
     setDifficulty();
     
     // Important  variables
@@ -153,7 +155,10 @@ void drawBoard () {
     textAlign(CORNER);
     fill(0, 0, 0);
     textSize(16);
-    text("LMB to reveal square, space to flag.", 30, 30);
+    text("LMB: reveal", 30, 30);
+    text("Space: Flag", 30, 50);
+    text(". [dot]: zoom in", 30, 70);
+    text(", [comma]: zoom out", 30, 90);
     for (int i = 0; i < boardWidth; i++) {
         for (int j = 0; j < boardHeight; j++) {
             if (squareIsRevealed[i][j]) {
@@ -189,6 +194,11 @@ void drawBoard () {
             }
         }
     }
+}
+
+void drawBackground() {
+    fill(200, 200, 200);
+    rect(0, 0, width, height);
 }
 
 int countNearbyMines(int x, int y) {
@@ -304,6 +314,14 @@ void keyPressed() {
         int x = (xm - boardStartX) / pixelCount;
         int y = (ym - boardStartY) / pixelCount;
         flagOrUnflagSquare(x, y);
+    }
+    if (key == '.') {
+        pixelCount++;
+        drawBackground();
+    }
+    if (key == ',') {
+        pixelCount--;
+        drawBackground();
     }
     drawBoard();
 }
