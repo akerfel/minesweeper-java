@@ -54,7 +54,7 @@ void setup() {
     boardStartY = 150;
 
     // Difficulty settings
-    difficulty = "Intermediate"; // "Supersmall", "Beginner", "Intermediate" or "Expert"
+    difficulty = "Expert"; // "Supersmall", "Beginner", "Intermediate" or "Expert"
     setDifficulty();
 
     // Important  variables
@@ -151,7 +151,7 @@ void setDifficulty() {
         boardWidth = 16;
         boardHeight = 16;
         numMines = 40;
-    } else if (difficulty.equals("Hard")) {
+    } else if (difficulty.equals("Expert")) {
         boardWidth = 30;
         boardHeight = 16;
         numMines = 99;
@@ -269,7 +269,7 @@ void mouseClicked() {
 boolean hasWon() {
     for (int i = 0; i < boardWidth; i++) {
         for (int j = 0; j < boardHeight; j++) {
-            if (!squareHasMine[i][j]) {  // if square has mine, skip it  
+            if (!squareHasMine[i][j]) { // if square has mine, skip it  
                 // If square without mine is NOT revealed, game has not been won yet.
                 if (!squareIsRevealed[i][j]) {
                     return false;
