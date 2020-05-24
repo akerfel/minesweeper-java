@@ -252,13 +252,15 @@ void mouseClicked() {
     if (!gameWon && !gameOver && mouseButton == LEFT) {
         int x = (xm - boardStartX) / pixelCount;
         int y = (ym - boardStartY) / pixelCount;
-        if (x >= 0 && y >= 0 && x < boardHeight && y < boardWidth) {
+        print("clicked square " + x + " " + y);
+        if (x >= 0 && y >= 0 && x < boardWidth && y < boardHeight) {
             clickSquare(x, y);
-            println("clicked square " + x + " " + y);
+            print(", SUCCESS");
         }
         if (hasWon()) {
             setGameWon();
         }
+        println("");
     }
     drawBoard();
 }
