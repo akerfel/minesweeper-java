@@ -1,4 +1,4 @@
-# minesweeper-clone
+# minesweeper-java
 
 The classic game "minesweeper", implemented using Java/Processing.
 
