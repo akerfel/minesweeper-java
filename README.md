@@ -1,7 +1,5 @@
 # minesweeper-clone
 
-This is a clone of the classic windows game "minesweeper".
+The classic game "minesweeper", implemented using Java/Processing.
 
-Made in Processing (a programming language built on Java).
-
-Play original game online: http://minesweeperonline.com/
+![java_uQPu2ZIqTY](https://gits-15.sys.kth.se/storage/user/7786/files/58eee88e-3500-4463-a4b8-c8ac8e7fdedb)
