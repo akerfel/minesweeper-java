@@ -6,7 +6,7 @@ void drawBoard () {
     textAlign(CORNER);
     fill(0, 0, 0);
     textSize(16);
-    text("Left click: reveal", 30, 30);
+    text("Left click: Reveal", 30, 30);
     text("Right click: Flag", 30, 50);
     text("period ( . ) : zoom in", 30, 70);
     text("comma ( , ): zoom out", 30, 90);
