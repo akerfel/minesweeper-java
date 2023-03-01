@@ -1,4 +1,3 @@
-
 // this function is only called when mouse is clicked,
 // since board does not need to be updated at any other point.
 void drawBoard () {
@@ -16,8 +15,7 @@ void drawBoard () {
                 fill(220, 220, 220);
                 if (gameWon) {
                     fill(0, 220, 0);
-                }
-                else if (gameOver) {
+                } else if (gameOver) {
                     fill(220, 0, 0);
                 }
                 square(boardStartX + i * pixelCount, boardStartY + j * pixelCount, pixelCount);
@@ -38,8 +36,7 @@ void drawBoard () {
                         circle(boardStartX + i * pixelCount + pixelCount / 2, boardStartY + j * pixelCount + pixelCount / 2, pixelCount / 3);
                     }
                 }
-            }
-            else {
+            } else {
                 fill(120, 120, 120);
                 square(boardStartX + i * pixelCount, boardStartY + j * pixelCount, pixelCount);
                 if (squareIsFlagged[i][j]) {

@@ -14,8 +14,7 @@ void mouseClicked() {
                 setGameWon();
             }
             println("");
-        }
-        else if (mouseButton == RIGHT) {
+        } else if (mouseButton == RIGHT) {
             int x = (xm - boardStartX) / pixelCount;
             int y = (ym - boardStartY) / pixelCount;
             flagOrUnflagSquare(x, y);

@@ -33,7 +33,7 @@ void placeMines() {
     int minesLeftToPlace = numMines;
     float mineChance = calculateMineChance();
     setAllSquaresToNoMines();
-    while (minesLeftToPlace > 0) { 
+    while (minesLeftToPlace > 0) {
         for (int i = 0; i < boardWidth; i++) {
             for (int j = 0; j < boardHeight; j++) {
                 if (random(0, 1) < mineChance) {
@@ -152,14 +152,14 @@ void flagOrUnflagSquare(int x, int y) {
 boolean hasWon() {
     for (int i = 0; i < boardWidth; i++) {
         for (int j = 0; j < boardHeight; j++) {
-            if (!squareHasMine[i][j]) { // if square has mine, skip it  
+            if (!squareHasMine[i][j]) { // if square has mine, skip it
                 // If square without mine is NOT revealed, game has not been won yet.
                 if (!squareIsRevealed[i][j]) {
                     return false;
                 }
             }
         }
-    } 
+    }
     return true;    // if all squares without mines have been revealed, game has been won.
 }
 
