@@ -2,13 +2,14 @@
 // this function is only called when mouse is clicked,
 // since board does not need to be updated at any other point.
 void drawBoard () {
+    drawBackground();
     textAlign(CORNER);
     fill(0, 0, 0);
     textSize(16);
-    text("LMB: reveal", 30, 30);
-    text("Space: Flag", 30, 50);
-    text(". [dot]: zoom in", 30, 70);
-    text(", [comma]: zoom out", 30, 90);
+    text("Left click: reveal", 30, 30);
+    text("Right click: Flag", 30, 50);
+    text("period ( . ) : zoom in", 30, 70);
+    text("comma ( , ): zoom out", 30, 90);
     for (int i = 0; i < boardWidth; i++) {
         for (int j = 0; j < boardHeight; j++) {
             if (squareIsRevealed[i][j]) {
