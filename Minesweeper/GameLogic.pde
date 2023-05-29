@@ -86,8 +86,6 @@ void setDifficulty() {
     }
 }
 
-
-
 int countNearbyMines(int x, int y) {
     int minesCounted = 0;
     // squares above, aka checking y - 1
@@ -192,21 +190,6 @@ void clickSquare(int x, int y) {
     if (!squareHasMine[x][y]) {
         recursiveClick(x, y);
     }
-    /*
- // squares above, aka checking same y - 1
-     recursiveClick(x - 1, y - 1);
-     recursiveClick(x, y - 1);
-     recursiveClick(x + 1, y - 1);
-     
-     // squares left and right, aka checking same y
-     recursiveClick(x - 1, y);
-     recursiveClick(x + 1, y);
-     
-     // squares below, aka checking same y + 1
-     recursiveClick(x - 1, y + 1);
-     recursiveClick(x, y + 1);
-     recursiveClick(x + 1, y + 1);
-     */
 }
 
 void recursiveClick(int x, int y) {
